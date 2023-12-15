@@ -8,10 +8,9 @@ import com.minisun.board.post.service.PostService;
 import com.minisun.board.post.service.PostServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/api/posts")
 @RestController
@@ -29,5 +28,20 @@ public class PostController {
             )
     {
         return new ApiResponse<>(HttpStatus.CREATED.value(),"successfully posted",postService.createPost(request,userDetails.getUser()));
+    }
+
+    @GetMapping("/read/{postId}")
+    public ApiResponse<PostResponse> getPost(
+            @PathVariable Long postId
+    )
+    {
+        return new ApiResponse<>(HttpStatus.OK.value(),"successfully read a post",postService.getPost(postId));
+    }
+
+    @GetMapping("/read")
+    public ApiResponse<List<PostResponse>> getPosts(
+    )
+    {
+        return new ApiResponse<>(HttpStatus.OK.value(),"successfully read all posts",postService.getPosts());
     }
 }
