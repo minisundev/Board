@@ -56,7 +56,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // allow access to resources
-                        .requestMatchers("/api/user/**").permitAll() // allow all requests from url starts with '/api/user/'
+                        .requestMatchers("/api/users/**").permitAll() // allow all requests from url starts with '/api/user/'
                         .anyRequest().authenticated() // other requests should go through authorization
         );
 
