@@ -36,7 +36,7 @@ public class UserController {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error(fieldError.getField() + " field : " + fieldError.getDefaultMessage());
             }
-            throw new IllegalArgumentException("input form doesn't meet requirements");
+            throw new IllegalArgumentException("닉네임 또는 패스워드를 확인해주세요.");
         }
         userService.signup(signupRequest);
         // if succeeded

@@ -19,9 +19,14 @@ public class UserService {
         String password = passwordEncoder.encode(requestDto.getPassword());
         String passwordCheck = requestDto.getPasswordCheck();
 
+        //check if password contains username
+        if (requestDto.getPassword().contains(username)){
+            throw new IllegalArgumentException("password should not contain username");
+        }
+
         // check username duplication
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new IllegalArgumentException("the username is already exists");
+            throw new IllegalArgumentException("중복된 닉네임입니다.");
         }
 
         // check password
@@ -39,10 +44,10 @@ public class UserService {
         String password = loginRequestDto.getPassword();
         // find username
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("there is no such user"));
+                .orElseThrow(() -> new IllegalArgumentException("닉네임을 확인해주세요."));
         // check password
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("wrong password");
+            throw new IllegalArgumentException("패스워드를 확인해주세요.");
         }
     }
 }
