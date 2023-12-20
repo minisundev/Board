@@ -19,10 +19,10 @@ public class Post extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(length = 500)
     private String title;
 
-    @Column
+    @Column(length = 5000)
     private String content;
 
     @ManyToOne
