@@ -32,9 +32,18 @@ public interface PostService {
 
     /*
      * Update Post
+     * @param Long : id of a post to delete the post
      * @param PostRequest : post update request dto
      * @param User : the author
      * @return : PostResponse
      * */
     public PostResponse updatePost(Long postId, PostRequest request, User user);
+
+    /*
+     * Update Post
+     * @param Long : id of a post to delete the post
+     * @param User : the author
+     * @return : void
+     * */
+    public void deletePost(Long postId, User user);
 }
