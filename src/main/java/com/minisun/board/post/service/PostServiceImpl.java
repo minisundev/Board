@@ -47,6 +47,11 @@ public class PostServiceImpl implements PostService{
         return new PostResponse(post);
     }
 
+    public void deletePost(Long postId, User user){
+        Post post = getUserPost(postId,user);
+        postRepository.delete(post);
+    }
+
     private Post getUserPost(Long postId, User user){
         Post post = postRepository.findById(postId)
                 .orElseThrow(()->new NullPointerException("the post id doesn't exist"));

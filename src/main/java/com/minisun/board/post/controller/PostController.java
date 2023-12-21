@@ -64,6 +64,16 @@ public class PostController {
         return new ApiResponse<>(HttpStatus.OK.value(),"successfully updated a post",postService.updatePost(postId,request,userDetails.getUser()));
     }
 
+    @DeleteMapping("/{postId}")
+    public ApiResponse<Void> deletePost(
+            @PathVariable(name = "postId") Long postId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    )
+    {
+        postService.deletePost(postId,userDetails.getUser());
+        return new ApiResponse<>(HttpStatus.OK.value(),"successfully deleted a post");
+    }
+
     private void validateRequest(BindingResult bindingResult)
     {
         // Validation exception
