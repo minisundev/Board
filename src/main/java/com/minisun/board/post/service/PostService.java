@@ -29,4 +29,12 @@ public interface PostService {
      * @return : List<PostResponse>
      * */
     public List<PostResponse> getPosts();
+
+    /*
+     * Update Post
+     * @param PostRequest : post update request dto
+     * @param User : the author
+     * @return : PostResponse
+     * */
+    public PostResponse updatePost(Long postId, PostRequest request, User user);
 }

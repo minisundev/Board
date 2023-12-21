@@ -33,14 +33,7 @@ public class PostController {
             BindingResult bindingResult
             )
     {
-        // Validation exception
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        if (fieldErrors.size() > 0) {
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                log.error(fieldError.getField() + " field : " + fieldError.getDefaultMessage());
-            }
-            throw new IllegalArgumentException("the input content has exceeded the limit");
-        }
+        validateRequest(bindingResult);
         return new ApiResponse<>(HttpStatus.CREATED.value(),"successfully posted",postService.createPost(request,userDetails.getUser()));
     }
 
@@ -57,5 +50,29 @@ public class PostController {
     )
     {
         return new ApiResponse<>(HttpStatus.OK.value(),"successfully read all posts",postService.getPosts());
+    }
+
+    @PatchMapping("/{postId}")
+    public ApiResponse<PostResponse> updatePost(
+            @PathVariable(name = "postId") Long postId,
+            @Valid @RequestBody PostRequest request,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            BindingResult bindingResult
+    )
+    {
+        validateRequest(bindingResult);
+        return new ApiResponse<>(HttpStatus.OK.value(),"successfully updated a post",postService.updatePost(postId,request,userDetails.getUser()));
+    }
+
+    private void validateRequest(BindingResult bindingResult)
+    {
+        // Validation exception
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        if (fieldErrors.size() > 0) {
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                log.error(fieldError.getField() + " field : " + fieldError.getDefaultMessage());
+            }
+            throw new IllegalArgumentException("the input content has exceeded the limit");
+        }
     }
 }

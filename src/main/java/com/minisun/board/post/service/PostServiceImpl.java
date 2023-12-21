@@ -5,10 +5,12 @@ import com.minisun.board.post.dto.PostResponse;
 import com.minisun.board.post.entity.Post;
 import com.minisun.board.post.repository.PostRepository;
 import com.minisun.board.user.entity.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,5 +38,22 @@ public class PostServiceImpl implements PostService{
                 .stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public PostResponse updatePost(Long postId, PostRequest request, User user){
+        Post post = getUserPost(postId,user);
+        post.update(request);
+        return new PostResponse(post);
+    }
+
+    private Post getUserPost(Long postId, User user){
+        Post post = postRepository.findById(postId)
+                .orElseThrow(()->new NullPointerException("the post id doesn't exist"));
+
+        if(!post.getUser().getId().equals(user.getId())){
+            throw new RejectedExecutionException("only the author can modify/delete the post");
+        }
+        return post;
     }
 }
