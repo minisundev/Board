@@ -32,6 +32,7 @@ public interface PostService {
 
     /*
      * Update Post
+     * @param postId : id of a post to delete the post
      * @param PostRequest : post update request dto
      * @param User : the author
      * @return : PostResponse
