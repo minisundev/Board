@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.NoSuchElementException;
 import java.util.concurrent.RejectedExecutionException;
 
 @RestControllerAdvice
@@ -26,6 +27,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({UsernameNotFoundException.class})
     public ApiResponse<?> handleUsernameNotFoundException(UsernameNotFoundException ex){
+        return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
+    }
+
+    @ExceptionHandler({NoSuchElementException.class})
+    public ApiResponse<?> handleNoSuchElementException(NoSuchElementException ex){
         return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(),ex.getMessage());
     }
 

@@ -1,9 +1,11 @@
 package com.minisun.board.post.entity;
 
+import com.minisun.board.comment.entity.Comment;
 import com.minisun.board.global.entity.Timestamped;
 import com.minisun.board.post.dto.PostRequest;
 import com.minisun.board.user.entity.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +15,7 @@ import java.util.List;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +30,9 @@ public class Post extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Comment> comments;
 
     public Post(PostRequest request, User user){
         this.title = request.getTitle();
