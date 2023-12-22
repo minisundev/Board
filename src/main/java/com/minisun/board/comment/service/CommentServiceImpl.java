@@ -10,7 +10,9 @@ import com.minisun.board.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +28,10 @@ public class CommentServiceImpl implements CommentService{
         return new CommentResponse(saved);
     }
 
+    public List<CommentResponse> getComments(Long postId){
+        Post post = postRepository.findById(postId).orElseThrow(()-> new NoSuchElementException("the post id doesn't exist"));
+        List<Comment> comments =  post.getComments();
+        return comments.stream().map(CommentResponse::new).collect(Collectors.toList());
+    }
 
 }

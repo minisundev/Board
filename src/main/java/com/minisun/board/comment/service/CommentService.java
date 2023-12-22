@@ -4,6 +4,8 @@ import com.minisun.board.comment.dto.CommentRequest;
 import com.minisun.board.comment.dto.CommentResponse;
 import com.minisun.board.user.entity.User;
 
+import java.util.List;
+
 public interface CommentService {
 
     /*
@@ -14,4 +16,11 @@ public interface CommentService {
      * @return : CommentResponse
      * */
     public CommentResponse createComment(Long postId, CommentRequest request, User user);
+
+    /*
+     * Read Comment
+     * @param Long : the id of the post that the comments are attached to
+     * @return : List of CommentResponse
+     * */
+    public List<CommentResponse> getComments(Long postId);
 }

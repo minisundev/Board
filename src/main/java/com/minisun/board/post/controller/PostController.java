@@ -1,6 +1,10 @@
 package com.minisun.board.post.controller;
 
+import com.minisun.board.comment.dto.CommentResponse;
+import com.minisun.board.comment.service.CommentService;
+import com.minisun.board.comment.service.CommentServiceImpl;
 import com.minisun.board.global.dto.ApiResponse;
+import com.minisun.board.global.dto.Data2;
 import com.minisun.board.global.security.UserDetailsImpl;
 import com.minisun.board.post.dto.PostRequest;
 import com.minisun.board.post.dto.PostResponse;
@@ -21,9 +25,11 @@ import static org.hibernate.query.sqm.tree.SqmNode.log;
 @RestController
 public class PostController {
     private final PostService postService;
+    private final CommentService commentService;
 
-    public PostController(PostServiceImpl postServiceImpl) {
-        this.postService = postServiceImpl;
+    public PostController(PostServiceImpl postService, CommentServiceImpl commentService) {
+        this.postService = postService;
+        this.commentService = commentService;
     }
 
     @PostMapping("")
@@ -38,11 +44,11 @@ public class PostController {
     }
 
     @GetMapping("/read/{postId}")
-    public ApiResponse<PostResponse> getPost(
-            @PathVariable Long postId
+    public ApiResponse<Data2<PostResponse,List<CommentResponse>>> getPost(
+            @PathVariable(name = "postId") Long postId
     )
     {
-        return new ApiResponse<>(HttpStatus.OK.value(),"successfully read a post",postService.getPost(postId));
+        return new ApiResponse<>(HttpStatus.OK.value(),"successfully read a post",new Data2(postService.getPost(postId),commentService.getComments(postId)));
     }
 
     @GetMapping("/read")

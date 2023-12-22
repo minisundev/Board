@@ -39,7 +39,13 @@ public class CommentController {
         return new ApiResponse<>(HttpStatus.CREATED.value(),"successfully posted",commentService.createComment(postId,request,userDetails.getUser()));
     }
 
-
+    @GetMapping("/{postId}/comments")
+    public ApiResponse<List<CommentResponse>> getComments(
+            @PathVariable(name = "postId") Long postId
+    )
+    {
+        return new ApiResponse<>(HttpStatus.OK.value(),"successfully read",commentService.getComments(postId));
+    }
 
     private void validateRequest(BindingResult bindingResult)
     {
