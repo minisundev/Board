@@ -28,7 +28,7 @@ public class CommentController {
     }
 
     @PostMapping("/{postId}")
-    public ApiResponse<CommentResponse> postPost(
+    public ApiResponse<CommentResponse> postComment(
             @PathVariable(name = "postId") Long postId,
             @Valid @RequestBody CommentRequest request,
             @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -37,6 +37,14 @@ public class CommentController {
     {
         validateRequest(bindingResult);
         return new ApiResponse<>(HttpStatus.CREATED.value(),"successfully posted",commentService.createComment(postId,request,userDetails.getUser()));
+    }
+
+    @GetMapping("/{postId}/comments")
+    public ApiResponse<List<CommentResponse>> getComments(
+            @PathVariable(name = "postId") Long postId
+    )
+    {
+        return new ApiResponse<>(HttpStatus.OK.value(),"successfully read",commentService.getComments(postId));
     }
 
     private void validateRequest(BindingResult bindingResult)
