@@ -25,6 +25,15 @@ public interface CommentService {
     public List<CommentResponse> getComments(Long postId);
 
     /*
+     * Update Comment
+     * @param Long : the id of the comment to update
+     * @param CommentRequest : comment update request dto
+     * @param User : the author
+     * @return : CommentResponse
+     * */
+    public CommentResponse updateComment(Long commentId,CommentRequest request,User user);
+
+    /*
      * Delete Comment
      * @param Long : the id of the comment to delete
      * @return : void

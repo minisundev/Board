@@ -47,6 +47,16 @@ public class CommentController {
         return new ApiResponse<>(HttpStatus.OK.value(),"successfully read",commentService.getComments(postId));
     }
 
+    @PatchMapping("/{postId}/{commentId}")
+    public ApiResponse<CommentResponse> updateComment(
+            @PathVariable(name = "commentId") Long commentId,
+            @RequestBody CommentRequest request,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    )
+    {
+        return new ApiResponse<>(HttpStatus.OK.value(),"successfully updated",commentService.updateComment(commentId,request,userDetails.getUser()));
+    }
+
     @DeleteMapping("/{postId}/{commentId}")
     public ApiResponse<List<CommentResponse>> deleteComment(
             @PathVariable(name = "commentId") Long commentId,
