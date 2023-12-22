@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +33,19 @@ public class CommentServiceImpl implements CommentService{
         Post post = postRepository.findById(postId).orElseThrow(()-> new NoSuchElementException("the post id doesn't exist"));
         List<Comment> comments =  post.getComments();
         return comments.stream().map(CommentResponse::new).collect(Collectors.toList());
+    }
+
+    public void deleteComment(Long commentId,User user){
+        Comment comment  = getUserComment(commentId,user);
+        commentRepository.delete(comment);
+    }
+
+    private Comment getUserComment(Long commentId,User user){
+        Comment comment =  commentRepository.findById(commentId).orElseThrow(()-> new NoSuchElementException("the comment id doesn't exist"));
+        if(!comment.getUser().getId().equals(user.getId())){
+            throw new RejectedExecutionException("only the author can modify/delete");
+        }
+        return comment;
     }
 
 }

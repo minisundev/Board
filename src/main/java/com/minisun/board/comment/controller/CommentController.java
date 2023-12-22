@@ -47,6 +47,16 @@ public class CommentController {
         return new ApiResponse<>(HttpStatus.OK.value(),"successfully read",commentService.getComments(postId));
     }
 
+    @DeleteMapping("/{postId}/{commentId}")
+    public ApiResponse<List<CommentResponse>> deleteComment(
+            @PathVariable(name = "commentId") Long commentId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    )
+    {
+        commentService.deleteComment(commentId,userDetails.getUser());
+        return new ApiResponse<>(HttpStatus.OK.value(),"successfully deleted");
+    }
+
     private void validateRequest(BindingResult bindingResult)
     {
         // Validation exception

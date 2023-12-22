@@ -23,4 +23,11 @@ public interface CommentService {
      * @return : List of CommentResponse
      * */
     public List<CommentResponse> getComments(Long postId);
+
+    /*
+     * Delete Comment
+     * @param Long : the id of the comment to delete
+     * @return : void
+     * */
+    public void deleteComment(Long commentId,User user);
 }
