@@ -7,6 +7,7 @@ import com.minisun.board.comment.repository.CommentRepository;
 import com.minisun.board.post.entity.Post;
 import com.minisun.board.post.repository.PostRepository;
 import com.minisun.board.user.entity.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,13 @@ public class CommentServiceImpl implements CommentService{
         Post post = postRepository.findById(postId).orElseThrow(()-> new NoSuchElementException("the post id doesn't exist"));
         List<Comment> comments =  post.getComments();
         return comments.stream().map(CommentResponse::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public CommentResponse updateComment(Long commentId,CommentRequest request,User user){
+        Comment comment = getUserComment(commentId,user);
+        comment.update(request);
+        return new CommentResponse(comment);
     }
 
     public void deleteComment(Long commentId,User user){
